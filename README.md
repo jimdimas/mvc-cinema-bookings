@@ -17,7 +17,7 @@ Create one first on the root of your solution.Then you must set it up like this:
         },
         "AllowedHosts": "*",
         "ConnectionStrings": {
-            "{Your_Connection_Name}": "Server={Your_Server};Database={Your_DB_Name};Trusted_Connection=True;"
+            "{Your_Connection_Name}": "Server={Your_Server};Database={Your_DB_Name};Trusted_Connection=True;TrustServerCertificate=True"
         }
     }
 
