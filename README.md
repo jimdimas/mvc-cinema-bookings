@@ -23,6 +23,20 @@ Create one first on the root of your solution.Then you must set it up like this:
 
 Exclude the hyphens on the above example.The hyphens highlight your custom values for the connection string. <br />
 
+## EF Core Info
+
+I will be using Entity Framework Core using a code-first approach for the database creation , handling etc. <br />
+Whenever you want to create a new model , update a table , create a table etc. , you have to add your changes in the ApplicationDbContext file. <br />
+Afterwards , you need to migrate the changes to the database.EF Core achieves that through migrations.Check online for more info. <br />
+In our case , after every change we perform to the data models , we have to do the following:
+
+1.Open Tools->Package Manager Console
+2.Perform the following command : 'add-migration {your_migration_name}'
+3.update-database
+
+The migration name must be somewhat related to the changes you perform.For instance , if you change a model named User , you can have a name such as <br />
+'UpdateUserTable'.
+
 ## Basic View Setup
 
 I will use the slate theme from https://bootswatch.com/ and the navbar included if you go on Preview->Second navbar and code the code in place of the basic navbar. <br />
