@@ -32,10 +32,15 @@ namespace CinemaApplication.Controllers
                 TempData["message"] = "Email already exists";
                 return View();
             }
-            user.CreateTime=DateTime.Now;
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            user.Role = "USER";
-            _db.Users.Add(user);
+            Customer customer = new Customer();
+            customer.Email = user.Email;
+            customer.Username = user.Username;
+            customer.Name = user.Name;
+            customer.CreateTime=DateTime.Now;
+            customer.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            customer.Role = "CUSTOMER";
+            customer.CustomerId = Guid.NewGuid();
+            _db.Users.Add(customer);
             _db.SaveChanges();
             return RedirectToAction("Index","Home");
         }

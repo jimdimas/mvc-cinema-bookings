@@ -18,6 +18,18 @@ namespace CinemaApplication.Data
             builder.Entity<User>()
                 .HasIndex(user => user.Email)
                 .IsUnique();
+            builder.Entity<Customer>()
+                .ToTable("Customers")
+                .HasIndex(c=>c.CustomerId)
+                .IsUnique();
+            builder.Entity<ContentAdmin>()
+                .ToTable("ContentAdmins")
+                .HasIndex(c => c.ContentAdminId)
+                .IsUnique();
+            builder.Entity<Admin>()
+                .ToTable("Admins")
+                .HasIndex(c => c.AdminId)
+                .IsUnique();
         }
     }
 }

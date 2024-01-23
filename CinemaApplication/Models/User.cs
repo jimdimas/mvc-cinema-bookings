@@ -6,6 +6,7 @@ namespace CinemaApplication.Models
     public class User
     {
         public String Username { get; set; }
+        public String Name { get; set; }
         public String Email { get; set; }
         public String Password { get; set; }    
         public DateTime CreateTime { get; set; }

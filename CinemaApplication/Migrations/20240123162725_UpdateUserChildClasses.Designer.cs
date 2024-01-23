@@ -4,6 +4,7 @@ using CinemaApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240123162725_UpdateUserChildClasses")]
+    partial class UpdateUserChildClasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,10 +66,6 @@ namespace CinemaApplication.Migrations
                     b.Property<Guid>("AdminId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("AdminId")
-                        .IsUnique()
-                        .HasFilter("[AdminId] IS NOT NULL");
-
                     b.ToTable("Admins", (string)null);
                 });
 
@@ -77,10 +76,6 @@ namespace CinemaApplication.Migrations
                     b.Property<Guid>("ContentAdminId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("ContentAdminId")
-                        .IsUnique()
-                        .HasFilter("[ContentAdminId] IS NOT NULL");
-
                     b.ToTable("ContentAdmins", (string)null);
                 });
 
@@ -90,10 +85,6 @@ namespace CinemaApplication.Migrations
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique()
-                        .HasFilter("[CustomerId] IS NOT NULL");
 
                     b.ToTable("Customers", (string)null);
                 });
