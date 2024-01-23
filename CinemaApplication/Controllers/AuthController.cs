@@ -2,6 +2,7 @@
 using CinemaApplication.Data;
 using CinemaApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CinemaApplication.Controllers
 {
@@ -22,6 +23,11 @@ namespace CinemaApplication.Controllers
         [HttpPost]
         public IActionResult SignUp(User user)
         {
+            if (user == null)
+            {
+                TempData["message"] = "Something went wrong , try again";
+                return View();
+            }
             if (_db.Users.FirstOrDefault(u => u.Username == user.Username) != null)
             {
                 TempData["message"] = "Username already exists";
@@ -32,17 +38,33 @@ namespace CinemaApplication.Controllers
                 TempData["message"] = "Email already exists";
                 return View();
             }
-            Customer customer = new Customer();
-            customer.Email = user.Email;
-            customer.Username = user.Username;
-            customer.Name = user.Name;
-            customer.CreateTime=DateTime.Now;
-            customer.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            customer.Role = "CUSTOMER";
-            customer.CustomerId = Guid.NewGuid();
-            _db.Users.Add(customer);
-            _db.SaveChanges();
-            return RedirectToAction("Index","Home");
+            user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.CreateTime = DateTime.Now;
+            var serializedUser = JsonConvert.SerializeObject(user);
+            if (user.Email.EndsWith("@cinema.com"))
+            {
+                ContentAdmin contentAdmin = JsonConvert.DeserializeObject<ContentAdmin>(serializedUser);
+                contentAdmin.Role = "CONTENT-ADMIN";
+                contentAdmin.ContentAdminId = Guid.NewGuid();
+                _db.Users.Add(contentAdmin);
+                _db.SaveChanges();
+
+            } else if (user.Email.EndsWith("@cinema.admin.com"))
+            {
+                Admin admin = JsonConvert.DeserializeObject<Admin>(serializedUser);
+                admin.Role = "ADMIN";
+                admin.AdminId = Guid.NewGuid();
+                _db.Users.Add(admin);
+                _db.SaveChanges();
+            } else
+            {
+                Customer customer = JsonConvert.DeserializeObject<Customer>(serializedUser);
+                customer.Role = "CUSTOMER";
+                customer.CustomerId = Guid.NewGuid();
+                _db.Users.Add(customer);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("SignIn","Auth");
         }
 
         [HttpGet]
