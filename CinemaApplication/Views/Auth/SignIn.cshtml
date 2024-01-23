@@ -4,12 +4,25 @@
     ViewData["Title"] = "SignIn";
 }
 
+@{
+    if (TempData["message"]!=null){
+    <script>
+                Swal.fire({
+                title: 'Oops...',
+                text: '@TempData["message"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+                })
+    </script>
+    }
+}
+
 <h1>Sign In</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SignIn">
+        <form asp-controller="Auth" asp-action="SignIn" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
