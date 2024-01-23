@@ -26,3 +26,24 @@ Exclude the hyphens on the above example.The hyphens highlight your custom value
 ## Basic View Setup
 
 I will use the slate theme from https://bootswatch.com/ and the navbar included if you go on Preview->Second navbar and code the code in place of the basic navbar. <br />
+
+## Pop-up messages functionality
+
+I will be using the Sweet Alert 2 from https://sweetalert2.github.io/ for pop-up messages in my application. <br />
+Just go over to the above website , find the script source and include it in the header of the \_Layout.cshtml file.
+In order to include a Sweet Alert pop-up in a view , you need a code bracket like the following:
+
+    @{
+    ...some code here
+    <script>
+    Swal.fire({
+    title: {Title},
+    text: {Your Message},
+    icon: {Appropriate icon name},
+    confirmButtonText: {Button text}
+    })
+    </script>
+    ...rest code here
+    }
+
+The values in brackets in the above snippet should be your custom values.Search at the website provided for every provided icon name.
