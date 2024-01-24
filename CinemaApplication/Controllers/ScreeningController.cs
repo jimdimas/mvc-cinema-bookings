@@ -39,5 +39,31 @@ namespace CinemaApplication.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index", new {MovieName=MovieName});
         }
+
+        [HttpGet]
+        public IActionResult Edit(int? Id)
+        {
+            Screening screening = _db.Screenings.Include(s => s.Movie).Include(s => s.Cinema).FirstOrDefault(s => s.Id == Id);
+            return View(screening);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Screening screening,String MovieName)
+        {
+            _db.Entry(screening).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Screening",new {MovieName=MovieName});
+           
+        }
+
+        public IActionResult Delete(int? Id)
+        {
+            Screening screening = _db.Screenings.Include(s=>s.Movie).FirstOrDefault(s=> s.Id==Id);
+            String movieName = screening.Movie.MovieName;
+            _db.Screenings.Remove(screening);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Screening",new { MovieName = movieName });
+        }
     }
 }
