@@ -11,5 +11,6 @@ namespace CinemaApplication.Models
         public String Genre { get; set; }
         public String Director { get; set; }
         public ContentAdmin ContentAdmin { get; set; }
+        public ICollection<Screening> Screenings { get; set; }
     }
 }

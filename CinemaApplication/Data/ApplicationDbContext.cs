@@ -12,6 +12,8 @@ namespace CinemaApplication.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

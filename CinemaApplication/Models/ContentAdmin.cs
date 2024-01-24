@@ -6,5 +6,6 @@ namespace CinemaApplication.Models
     {
         public Guid ContentAdminId { get; set; } 
         public ICollection<Movie> Movies { get; set; }
+        public ICollection<Screening> Screenings { get; set; }
     }
 }
