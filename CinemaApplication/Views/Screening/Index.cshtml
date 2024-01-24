@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Screening>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Screenings for @TempData["MovieName"]</h2>
+        </div>
+    </div>
+    <br /><br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Cinema
+                </th>
+                <th>
+                    Time
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="50%">
+                        @obj.Cinema.Name
+                    </td>
+                    <td width="50%">
+                        @obj.Time.ToString();
+                    </td>
+                </tr>
+            }
+            <tr>
+                <form asp-controller="Screening" asp-action="Create" method="post">
+                <td>
+                    <input name="CinemaName" class="control-label"
+                </td>
+                <td>
+                    <input type="datetime-local"
+                           name="Time"
+                           value=@DateTime.Now;
+                           min=@DateTime.Now;
+                           max=@DateTime.Now.AddMonths(2); />
+                    <input type="submit" value="Add Screening" class="btn-light" />
+                    <input type="hidden" name="MovieName" value="@TempData["MovieName"]" />
+                </td>
+                </form>
+            </tr>
+            
+        </tbody>
+    </table>
+    <div>
+        <a asp-controller="Movie" asp-action="Index">Back to Movies Menu</a>
+    </div>
+        <hr />
+</div>

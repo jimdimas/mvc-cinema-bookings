@@ -31,20 +31,29 @@
             <th>
                 Duration (mins)
             </th>
+            <th>
+                Screenings
+            </th>
 		</tr>
 	</thead>
     <tbody>
         @foreach(var obj in Model)
         {
             <tr>
-                <td width="40%">
+                <td width="35%">
                     @obj.MovieName
 				</td>
-                <td width="40%">
+                <td width="35%">
                     @obj.Genre
 				</td>
-                <td width="20%">
+                <td width="10%">
                     @obj.Length
+                </td>
+                <td width="20%">
+                    <form asp-controller="Screening" asp-action="Index" method="get">
+                        <input type="hidden" value="@obj.MovieName" name="MovieName">
+                        <input type="submit" class="btn-light" value="View Screenings">
+                    </form>
                 </td>
 			</tr>
         }
