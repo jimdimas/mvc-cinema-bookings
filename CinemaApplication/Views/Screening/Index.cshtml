@@ -34,33 +34,42 @@
                     </td>
                     <td width="50%">
                         @obj.Time.ToString();
-                        <form display="inline" asp-controller="Screening" asp-action="Edit" method="get">
-                            <input type="hidden" name="Id" value=@obj.Id>
-                            <input type="submit" value="Edit" class="btn-warning">
-                        </form>
-                        <form display="inline" asp-controller="Screening" asp-action="Delete">
-                            <input type="hidden" name="Id" value=@obj.Id>
-                            <input type="submit" value="Delete" class="btn-danger">
-                        </form>
+                        @{
+                        if (TempData["role"]!=null && TempData["role"].Equals("CONTENT-ADMIN")){
+                                <form display="inline" asp-controller="Screening" asp-action="Edit" method="get">
+                                    <input type="hidden" name="Id" value=@obj.Id>
+                                    <input type="submit" value="Edit" class="btn-warning">
+                                </form>
+                                <form display="inline" asp-controller="Screening" asp-action="Delete">
+                                    <input type="hidden" name="Id" value=@obj.Id>
+                                    <input type="submit" value="Delete" class="btn-danger">
+                                </form>
+                            }
+                        }
                     </td>
                 </tr>
             }
-            <tr>
-                <form asp-controller="Screening" asp-action="Create" method="post">
-                <td>
-                    <input name="CinemaName" class="control-label"
-                </td>
-                <td>
-                    <input type="datetime-local"
-                           name="Time"
-                           value=@DateTime.Now;
-                           min=@DateTime.Now;
-                           max=@DateTime.Now.AddMonths(2); />
-                    <input type="submit" value="Add Screening" class="btn-light" />
-                    <input type="hidden" name="MovieName" value="@TempData["MovieName"]" />
-                </td>
-                </form>
-            </tr>
+            @{
+                if (TempData["role"] != null && TempData["role"].Equals("CONTENT-ADMIN"))
+                {
+                    <tr>
+                        <form asp-controller="Screening" asp-action="Create" method="post">
+                            <td>
+                                <input name="CinemaName" class="control-label">
+                    </td>
+                            <td>
+                                <input type="datetime-local"
+                               name="Time"
+                               value=@DateTime.Now;
+                               min=@DateTime.Now;
+                               max=@DateTime.Now.AddMonths(2); />
+                                <input type="submit" value="Add Screening" class="btn-light" />
+                                <input type="hidden" name="MovieName" value="@TempData["MovieName"]" />
+                            </td>
+                        </form>
+                    </tr>
+                }
+            }
             
         </tbody>
     </table>

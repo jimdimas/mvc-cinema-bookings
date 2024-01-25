@@ -89,13 +89,10 @@ namespace CinemaApplication.Controllers
                     TempData["message"] = "Invalid credentials provided";
                     return View();
                 }
-                if (dbUser.Role.Equals("CUSTOMER"))
-                {
-                    return RedirectToAction("Index", "Home");
-                } else
-                {
-                    return RedirectToAction("Index", "Movie");
-                }
+                HttpContext.Session.SetString("username", dbUser.Username);
+                HttpContext.Session.SetString("role", dbUser.Role);
+                TempData["role"]=dbUser.Role;   
+                return RedirectToAction("Index", "Movie");
             }
         }
     }
