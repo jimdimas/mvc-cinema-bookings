@@ -10,5 +10,6 @@ namespace CinemaApplication.Models
         public Cinema Cinema { get; set; }
         public DateTime Time { get; set; }
         public ContentAdmin ContentAdmin { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using CinemaApplication.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
 
 namespace CinemaApplication.Data
 {
@@ -14,6 +16,7 @@ namespace CinemaApplication.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,8 +34,12 @@ namespace CinemaApplication.Data
                 .IsUnique();
             builder.Entity<Admin>()
                 .ToTable("Admins")
-                .HasIndex(c => c.AdminId)
+            .HasIndex(c => c.AdminId)
                 .IsUnique();
+            builder.Entity<Booking>()
+                .HasOne(b => b.Screening)
+                .WithMany(s => s.Bookings)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
