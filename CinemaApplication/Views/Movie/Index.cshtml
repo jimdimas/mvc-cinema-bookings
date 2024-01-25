@@ -19,6 +19,12 @@
                         <i class="bi bi-plus-circle"></i> &nbsp; Add New Movie
                     </a>
                 </div>
+            } else if (TempData["role"]!=null && TempData["role"].Equals("CUSTOMER")){
+                <div class="col-6 text-end">
+                    <a asp-controller="Booking" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> &nbsp; View Bookings
+                    </a>
+                </div>
             }
         }
     </div>

@@ -44,8 +44,14 @@
                                     <input type="hidden" name="Id" value=@obj.Id>
                                     <input type="submit" value="Delete" class="btn-danger">
                                 </form>
+                            } else if (TempData["role"]!=null && TempData["role"].Equals("CUSTOMER")){
+                                <form display="inline" asp-controller="booking" asp-action="Create" method="post">
+                                    <input type="hidden" name="ScreeningId" value=@obj.Id>
+                                    <input type="number" name="Seats">
+                                    <input type="submit" value="Make Booking" class="btn-light">
+                                </form>
                             }
-                        }
+                        } 
                     </td>
                 </tr>
             }

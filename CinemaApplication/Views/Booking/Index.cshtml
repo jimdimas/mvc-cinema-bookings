@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Booking>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Your Bookings</h2>
+    <br /><br />
+
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Movie Name
+            </th>
+            <th>
+                Cinema
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Seats
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @{
+                foreach (var obj in Model)
+                {
+                        <tr>
+                            <td width="30%">
+                                @obj.Screening.Movie.MovieName
+                            </td>
+                            <td width="30%">
+                                @obj.Screening.Cinema.Name
+                            </td>
+                            <td width="20%">
+                                @obj.Screening.Time
+                            </td>
+                            <td width="20%">
+                                @obj.Seats
+                            </td>
+                            @if (@obj.Screening.Time>@DateTime.Now){
+                            <td>
+                                <form asp-controller="Booking" asp-action="Delete" method="post">
+                                    <input type="hidden" name="BookingId" value="@obj.Id">
+                                    <input type="submit" class="btn-danger" value="Cancel">
+                                </form>
+                            </td>
+                            }
+                        </tr>
+                }
+            }
+        </tbody>
+    </table>
+                <div>
+                    <a asp-controller="Movie" asp-action="Index">Back to Movies Menu</a>
+                </div>
