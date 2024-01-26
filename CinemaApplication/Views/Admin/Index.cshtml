@@ -37,27 +37,25 @@
             @foreach (var obj in Model)
             {
                 <tr>
-                    <td width="35%">
+                    <td width="30%">
                         @obj.Username
                     </td>
-                    <td width="35%">
+                    <td width="30%">
                         @obj.Email
                     </td>
-                    <td width="10%">
+                    <td width="35%">
                         @obj.CreateTime
-                    </td>
-                    <td>
-                        <form asp-action="Edit" asp-controller="Admin" method="get">
+                        &nbsp;
+                        <form asp-action="Edit" asp-controller="Admin" method="get" display="inline">
                             <input type="hidden" name="Username" value="@obj.Username" />
-                            <input type="submit" value="Edit" class="btn btn-warning"/>
+                            <input type="submit" value="Edit" class="btn btn-warning" />
                         </form>
-                    </td>
-                    <td>
-                        <form asp-action="Delete" asp-controller="Admin" method="post">
+                        <form asp-action="Delete" asp-controller="Admin" method="post" display="inline">
                             <input type="hidden" name="Username" value="@obj.Username" />
                             <input type="submit" value="Delete" class="btn btn-danger" />
                         </form>
                     </td>
+                    
                 </tr>
             }
         </tbody>

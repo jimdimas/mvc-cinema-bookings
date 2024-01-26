@@ -36,23 +36,23 @@
                         @obj.Time.ToString();
                         @{
                         if (TempData["role"]!=null && TempData["role"].Equals("CONTENT-ADMIN")){
-                                <form display="inline" asp-controller="Screening" asp-action="Edit" method="get">
+                                <form asp-controller="Screening" asp-action="Edit" method="get">
                                     <input type="hidden" name="Id" value=@obj.Id>
-                                    <input type="submit" value="Edit" class="btn-warning">
+                                    <input type="submit" value="Edit" class="btn btn-warning">
                                 </form>
-                                <form display="inline" asp-controller="Screening" asp-action="Delete">
+                                <form asp-controller="Screening" asp-action="Delete">
                                     <input type="hidden" name="Id" value=@obj.Id>
-                                    <input type="submit" value="Delete" class="btn-danger">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
                                 </form>
                             } else if (TempData["role"]!=null && TempData["role"].Equals("CUSTOMER")){
                                 if (obj.getAvailableSeats() > 0){
-                                    <form display="inline" asp-controller="booking" asp-action="Create" method="post">
+                                    <form asp-controller="booking" asp-action="Create" method="post">
                                         <input type="hidden" name="ScreeningId" value=@obj.Id>
                                         <input type="number" name="Seats" min="0" max="@obj.getAvailableSeats()">
-                                        <input type="submit" value="Make Booking" class="btn-light">
+                                        <input type="submit" value="Make Booking" class="btn btn-light">
                                     </form>
                                 } else{
-                                    <button type="button" class="btn-light" disabled>Full</button>
+                                    <button type="button" class="btn btn-light" disabled>Full</button>
                                 }
                             }
                         } 
@@ -73,7 +73,7 @@
                                value=@DateTime.Now;
                                min=@DateTime.Now;
                                max=@DateTime.Now.AddMonths(2); />
-                                <input type="submit" value="Add Screening" class="btn-light" />
+                                <input type="submit" value="Add Screening" class="btn btn-light" />
                                 <input type="hidden" name="MovieName" value="@TempData["MovieName"]" />
                             </td>
                         </form>
