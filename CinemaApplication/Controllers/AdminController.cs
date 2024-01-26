@@ -2,6 +2,7 @@
 using CinemaApplication.Filters;
 using CinemaApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace CinemaApplication.Controllers
@@ -62,5 +63,37 @@ namespace CinemaApplication.Controllers
 
             return RedirectToAction("Index", "Admin");
         }
+
+        [HttpGet]
+        public IActionResult Edit(String username)
+        {
+            ContentAdmin contentAdmin = _db.Set<ContentAdmin>().Find(username);
+            return View(contentAdmin);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(ContentAdmin contentAdmin)
+        {
+            if (contentAdmin != null)
+            {
+                _db.Attach(contentAdmin);
+                _db.Entry(contentAdmin).Property(c => c.CreateTime).IsModified = false;
+                _db.Entry(contentAdmin).Property(c => c.Password).IsModified = false;
+                _db.Entry(contentAdmin).Property(c => c.Role).IsModified = false;
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Admin");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(String username)
+        {
+            ContentAdmin contentAdmin = _db.Set<ContentAdmin>().Find(username);
+            _db.Set<ContentAdmin>().Remove(contentAdmin);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Admin");
+        }
+
     }
 }
