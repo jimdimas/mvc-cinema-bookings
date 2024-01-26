@@ -22,7 +22,15 @@ namespace CinemaApplication.Controllers
         {
             TempData["MovieName"] = MovieName;
             TempData["role"] = HttpContext.Session.GetString("role");
-            IEnumerable<Screening> movieScreenings = _db.Screenings.Where(s => s.Movie.MovieName == MovieName && s.Time>DateTime.Now).Include(s=> s.Cinema);
+            IEnumerable<Screening> movieScreenings = _db.Screenings
+                .Where(s => s.Movie.MovieName == MovieName && s.Time > DateTime.Now)
+                .Include(s => s.Cinema)
+                .Include(s => s.Bookings)
+                .OrderBy(s=>s.Time);
+            foreach(var screening in movieScreenings)
+            {
+                screening.setAvailableSeats(screening.Cinema.Seats - screening.Bookings.Sum(b => b.Seats));
+            }
             return View(movieScreenings);
         }
         [HttpPost]

@@ -11,5 +11,16 @@ namespace CinemaApplication.Models
         public DateTime Time { get; set; }
         public ContentAdmin ContentAdmin { get; set; }
         public ICollection<Booking> Bookings { get; set; }
+        private int availableSeats;
+
+        public int getAvailableSeats()
+        {
+            return availableSeats;
+        }
+
+        public void setAvailableSeats(int _availableSeats)
+        {
+            this.availableSeats = _availableSeats;
+        }
     }
 }
