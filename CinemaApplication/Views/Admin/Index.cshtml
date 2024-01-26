@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ContentAdmin>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Content Admins</h2>
+        </div>
+        <div class="col-6 text-end">
+            <form asp-controller="Admin" asp-action="Create" method="get">
+                <input type="submit" class="btn btn-primary" value="Create Content Admin" />
+            </form>
+        </div>
+    </div>
+    <br /><br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Creation Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="35%">
+                        @obj.Username
+                    </td>
+                    <td width="35%">
+                        @obj.Email
+                    </td>
+                    <td width="10%">
+                        @obj.CreateTime
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-controller="Movie" asp-action="Index">Back to Movies Menu</a>
+</div>

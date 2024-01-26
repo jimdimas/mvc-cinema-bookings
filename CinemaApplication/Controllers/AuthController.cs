@@ -41,30 +41,12 @@ namespace CinemaApplication.Controllers
             user.Password=BCrypt.Net.BCrypt.HashPassword(user.Password);
             user.CreateTime = DateTime.Now;
             var serializedUser = JsonConvert.SerializeObject(user);
-            if (user.Email.EndsWith("@cinema.com"))
-            {
-                ContentAdmin contentAdmin = JsonConvert.DeserializeObject<ContentAdmin>(serializedUser);
-                contentAdmin.Role = "CONTENT-ADMIN";
-                contentAdmin.ContentAdminId = Guid.NewGuid();
-                _db.Users.Add(contentAdmin);
-                _db.SaveChanges();
-
-            } else if (user.Email.EndsWith("@cinema.admin.com"))
-            {
-                Admin admin = JsonConvert.DeserializeObject<Admin>(serializedUser);
-                admin.Role = "ADMIN";
-                admin.AdminId = Guid.NewGuid();
-                _db.Users.Add(admin);
-                _db.SaveChanges();
-            } else
-            {
-                Customer customer = JsonConvert.DeserializeObject<Customer>(serializedUser);
-                customer.Role = "CUSTOMER";
-                customer.CustomerId = Guid.NewGuid();
-                _db.Users.Add(customer);
-                _db.SaveChanges();
-            }
-            return RedirectToAction("SignIn","Auth");
+            Customer customer = JsonConvert.DeserializeObject<Customer>(serializedUser);
+            customer.Role = "CUSTOMER";
+            customer.CustomerId = Guid.NewGuid();
+            _db.Users.Add(customer);
+            _db.SaveChanges();
+            return RedirectToAction("SignIn", "Auth");
         }
 
         [HttpGet]

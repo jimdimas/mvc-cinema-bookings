@@ -1,0 +1,68 @@
+﻿@model CinemaApplication.Models.User
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@{
+    try
+    {
+        if (TempData["message"] != null)
+        {
+            <script>
+                Swal.fire({
+                    title: 'Oops...',
+                    text: '@TempData["message"]',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        }
+    }
+    catch
+    {
+
+    }
+}
+
+<h1>Create Content Admin</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Admin" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create Content Admin" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Admin" asp-action="Index">Back to Content Admins Menu</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
