@@ -2,8 +2,10 @@
 using CinemaApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using CinemaApplication.Filters;
 namespace CinemaApplication.Controllers
 {
+    [AuthenticationFilter]
     public class MovieController : Controller
     {
         ApplicationDbContext _db;
@@ -14,10 +16,7 @@ namespace CinemaApplication.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                TempData["role"] = "CONTENT-ADMIN";
-            }
+            TempData["role"] = HttpContext.Session.GetString("role");
             IEnumerable<Movie> movies = _db.Movies;
             return View(movies);
         }

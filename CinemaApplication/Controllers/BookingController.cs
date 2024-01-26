@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Http;
 using CinemaApplication.Data;
 using CinemaApplication.Models;
 using Microsoft.EntityFrameworkCore;
+using CinemaApplication.Filters;
 
 namespace CinemaApplication.Controllers
 {
+    [AuthenticationFilter]
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _db;

@@ -3,8 +3,10 @@ using CinemaApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using CinemaApplication.Filters;
 namespace CinemaApplication.Controllers
 {
+    [AuthenticationFilter]
     public class ScreeningController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -60,6 +62,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             Screening screening = _db.Screenings.Include(s => s.Movie).Include(s => s.Cinema).FirstOrDefault(s => s.Id == Id);
             return View(screening);
         }
@@ -72,6 +75,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             _db.Entry(screening).State = EntityState.Modified;
             _db.SaveChanges();
             return RedirectToAction("Index", "Screening",new {MovieName=MovieName});
@@ -83,6 +87,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             Screening screening = _db.Screenings.Include(s=>s.Movie).FirstOrDefault(s=> s.Id==Id);
             String movieName = screening.Movie.MovieName;
             _db.Screenings.Remove(screening);
