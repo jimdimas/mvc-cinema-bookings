@@ -1,9 +1,12 @@
 ﻿using CinemaApplication.Data;
+using CinemaApplication.Filters;
 using CinemaApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApplication.Controllers
 {
+    [AuthenticationFilter]
     public class CinemaController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -12,6 +15,9 @@ namespace CinemaApplication.Controllers
         }
         public IActionResult Index()
         {
+            if (!HttpContext.Session.GetString("role").Equals("ADMIN")){
+                return RedirectToAction("Index", "Movie");
+            }
             IEnumerable<Cinema> cinemas = _db.Cinemas;
             return View(cinemas);
         }
@@ -19,6 +25,10 @@ namespace CinemaApplication.Controllers
         [HttpPost]
         public IActionResult Create(String Name,int Seats,Boolean ThreeDimensions)
         {
+            if (!HttpContext.Session.GetString("role").Equals("ADMIN"))
+            {
+                return RedirectToAction("Index", "Movie");
+            }
             Cinema cinema = new Cinema();
             cinema.Name = Name;
             cinema.Seats = Seats;
@@ -31,6 +41,15 @@ namespace CinemaApplication.Controllers
         [HttpPost]
         public IActionResult Delete(String name)
         {
+            if (!HttpContext.Session.GetString("role").Equals("ADMIN"))
+            {
+                return RedirectToAction("Index", "Movie");
+            }
+            if (_db.Screenings.Include(s => s.Cinema).FirstOrDefault(s => s.Cinema.Name.Equals(name)) != null)
+            {
+                TempData["error"] = "Cannot delete given cinema entry , screenings on given cinema exist";
+                return RedirectToAction("Index", "Cinema");
+            }
             Cinema cinema = _db.Cinemas.Find(name);
             if (cinema != null)
             {

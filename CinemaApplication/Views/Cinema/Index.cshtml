@@ -4,6 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    if (TempData["error"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Oops...',
+                text: '@TempData["error"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    }
+}
+
 <h1>Index</h1>
 
 <table class="table">
@@ -31,6 +45,11 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ThreeDim)
+                &nbsp;
+                <form asp-controller="Cinema" asp-action="Delete" method="post">
+                    <input type="hidden" name="Name" value="@Html.DisplayFor(modelItem=>item.Name)" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
             </td>
         </tr>
 }
