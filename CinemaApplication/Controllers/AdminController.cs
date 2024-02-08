@@ -77,11 +77,21 @@ namespace CinemaApplication.Controllers
         {
             if (contentAdmin != null)
             {
-                _db.Attach(contentAdmin);
-                _db.Entry(contentAdmin).Property(c => c.CreateTime).IsModified = false;
-                _db.Entry(contentAdmin).Property(c => c.Password).IsModified = false;
-                _db.Entry(contentAdmin).Property(c => c.Role).IsModified = false;
-                _db.SaveChanges();
+                ContentAdmin dbContentAdmin = _db.Set<ContentAdmin>().Find(contentAdmin.Username);
+                _db.Attach(dbContentAdmin);
+                if (contentAdmin.Name != null)
+                {
+                    dbContentAdmin.Name = contentAdmin.Name;
+                }
+                if (contentAdmin.Email != null)
+                {
+                    dbContentAdmin.Email = contentAdmin.Email;
+                }
+                if (contentAdmin.Password != null && !contentAdmin.Password.Equals(" "))
+                {
+                    dbContentAdmin.Password = BCrypt.Net.BCrypt.HashPassword(contentAdmin.Password);
+                }
+                _db.SaveChanges(true);
             }
             return RedirectToAction("Index", "Admin");
         }

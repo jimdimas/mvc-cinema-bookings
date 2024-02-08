@@ -15,11 +15,10 @@ namespace CinemaApplication.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (HttpContext.Session.GetString("role")!=null)
+            {
+                TempData["role"] = HttpContext.Session.GetString("role");
+            }
             return View();
         }
 
