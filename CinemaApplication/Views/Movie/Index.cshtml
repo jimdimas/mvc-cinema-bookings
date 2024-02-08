@@ -29,6 +29,9 @@
             else if (TempData["role"] != null && TempData["role"].Equals("ADMIN"))
             {
                 <div class="col-6 text-end">
+                    <a asp-controller="Cinema" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> &nbsp; View Cinemas
+                    </a>
                     <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">
                         <i class="bi bi-plus-circle"></i> &nbsp; View Content Admins
                     </a>
