@@ -34,6 +34,22 @@
             </td>
         </tr>
 }
+    <tr>
+        <form asp-controller="Cinema" asp-action="Create" method="post">
+            <td>
+                <input name="Name" />
+            </td>
+            <td>
+                <input name="Seats" type="number" min="10" max="1000" />
+            </td>
+            <td>
+                &nbsp;&nbsp;&nbsp;
+                <input name="ThreeDimensions" type="checkbox" value="true"/>
+                <input name="ThreeDimensions" type="hidden" value="false" />
+                <input type="submit" value="Add New Cinema" class="btn btn-light" />
+            </td>
+        </form>
+    </tr>
     </tbody>
     <a asp-controller="Movie" asp-action="Index">Back to Movies</a>
 </table>
