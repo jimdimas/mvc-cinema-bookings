@@ -77,5 +77,14 @@ namespace CinemaApplication.Controllers
                 return RedirectToAction("Index", "Movie");
             }
         }
+
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.GetString("role") != null)
+            {
+                HttpContext.Session.Clear();
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

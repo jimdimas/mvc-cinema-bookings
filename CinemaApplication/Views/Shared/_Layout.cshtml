@@ -25,12 +25,20 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="SignIn">Sign In</a>
-                        </li>
+                        @{ if (TempData["role"]==null){
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="SignIn">Sign In</a>
+                            </li>
+                            } else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link " asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
+                                </li>
+                            } 
+                        }
                 </div>
             </div>
         </nav>

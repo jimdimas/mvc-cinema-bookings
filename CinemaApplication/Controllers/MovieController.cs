@@ -28,6 +28,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             return View();
         }
 
@@ -38,6 +39,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             ContentAdmin contentAdmin = _db.Set<ContentAdmin>().FirstOrDefault(c => c.Username == HttpContext.Session.GetString("username"));
             movie.ContentAdmin = contentAdmin;
             _db.Movies.Add(movie);

@@ -18,6 +18,7 @@ namespace CinemaApplication.Controllers
             if (!HttpContext.Session.GetString("role").Equals("ADMIN")){
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             IEnumerable<Cinema> cinemas = _db.Cinemas;
             return View(cinemas);
         }
@@ -29,6 +30,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             Cinema cinema = new Cinema();
             cinema.Name = Name;
             cinema.Seats = Seats;
@@ -45,6 +47,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             if (_db.Screenings.Include(s => s.Cinema).FirstOrDefault(s => s.Cinema.Name.Equals(name)) != null)
             {
                 TempData["error"] = "Cannot delete given cinema entry , screenings on given cinema exist";

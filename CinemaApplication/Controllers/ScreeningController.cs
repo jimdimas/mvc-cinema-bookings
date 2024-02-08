@@ -29,7 +29,9 @@ namespace CinemaApplication.Controllers
                 .Include(s => s.Cinema)
                 .Include(s => s.Bookings)
                 .OrderBy(s=>s.Time);
-            foreach(var screening in movieScreenings)
+
+            // booking available seats are assigned cinema seats minus the amount of bookings* seats per booking
+            foreach (var screening in movieScreenings)
             {
                 screening.setAvailableSeats(screening.Cinema.Seats - screening.Bookings.Sum(b => b.Seats));
             }
@@ -42,6 +44,7 @@ namespace CinemaApplication.Controllers
             {
                 return RedirectToAction("Index", "Movie");
             }
+            TempData["role"] = HttpContext.Session.GetString("role");
             Cinema cinema = _db.Cinemas.FirstOrDefault(c=>c.Name == CinemaName);
             Movie movie = _db.Movies.FirstOrDefault(m=>m.MovieName==MovieName);
             ContentAdmin contentAdmin = _db.Set<ContentAdmin>().FirstOrDefault(u => u.Username.Equals(HttpContext.Session.GetString("username")));
