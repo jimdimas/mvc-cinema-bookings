@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using CinemaApplication.Filters;
+using Microsoft.IdentityModel.Tokens;
 namespace CinemaApplication.Controllers
 {
     [AuthenticationFilter]
@@ -49,6 +50,18 @@ namespace CinemaApplication.Controllers
             Movie movie = _db.Movies.FirstOrDefault(m=>m.MovieName==MovieName);
             ContentAdmin contentAdmin = _db.Set<ContentAdmin>().FirstOrDefault(u => u.Username.Equals(HttpContext.Session.GetString("username")));
             Screening screening = new Screening();
+            if (!_db.Screenings
+                .Include(s=>s.Movie)
+                .Include(s=>s.Cinema)
+                .Where(
+                    s=>(DateTime.Compare(s.Time.AddMinutes(movie.Length),Time)>=0 
+                    && DateTime.Compare(Time.AddMinutes(movie.Length), s.Time) >= 0) 
+                    && s.Cinema.Name.Equals(CinemaName))
+                .IsNullOrEmpty())   //checks whether this screening's time and duration overlap with existing one 
+            {
+                TempData["error"] = "Cannot create screening for movie in given cinema at given time , overlaping schedule with other screening";
+                return RedirectToAction("Index", new { MovieName = MovieName });
+            }
             screening.Movie = movie;
             screening.ContentAdmin = contentAdmin;
             screening.Cinema = cinema;
@@ -91,7 +104,8 @@ namespace CinemaApplication.Controllers
                 return RedirectToAction("Index", "Movie");
             }
             TempData["role"] = HttpContext.Session.GetString("role");
-            Screening screening = _db.Screenings.Include(s=>s.Movie).FirstOrDefault(s=> s.Id==Id);
+            Screening screening = _db.Screenings.Include(s => s.Bookings).Include(s => s.Movie).FirstOrDefault(s => s.Id == Id);
+            _db.Bookings.RemoveRange(screening.Bookings);
             String movieName = screening.Movie.MovieName;
             _db.Screenings.Remove(screening);
             _db.SaveChanges();
