@@ -6,6 +6,20 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    if (TempData["error"] != null)
+    {
+        <script>
+            Swal.fire({
+                title: 'Oops...',
+                text: '@TempData["error"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    }
+}
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">

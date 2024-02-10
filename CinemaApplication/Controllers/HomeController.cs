@@ -15,7 +15,7 @@ namespace CinemaApplication.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("role")!=null)
+            if (HttpContext.Session.GetString("role") != null)
             {
                 TempData["role"] = HttpContext.Session.GetString("role");
             }

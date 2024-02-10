@@ -28,7 +28,11 @@
     </div>
 
 <div>
-    <a asp-controller="Screening" asp-action="Index">Back to Screenings</a>
+    @{
+        IDictionary<String, String> routeData = new Dictionary<String,String>();
+        routeData.Add("MovieName", Model.Movie.MovieName);
+        <a asp-controller="Screening" asp-action="Index" asp-all-route-data="@routeData">Back to Screenings</a>
+    }
 </div>
 
 @section Scripts {
