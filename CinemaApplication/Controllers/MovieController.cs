@@ -22,23 +22,17 @@ namespace CinemaApplication.Controllers
         }
 
         [HttpGet]
+        [ContentAdminFilter]
         public IActionResult Create()
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             return View();
         }
 
         [HttpPost]
+        [ContentAdminFilter]
         public IActionResult Create(Movie movie)
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             ContentAdmin contentAdmin = _db.Set<ContentAdmin>().FirstOrDefault(c => c.Username == HttpContext.Session.GetString("username"));
             movie.ContentAdmin = contentAdmin;

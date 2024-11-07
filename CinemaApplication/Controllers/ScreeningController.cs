@@ -46,12 +46,9 @@ namespace CinemaApplication.Controllers
             return View(movieScreenings);
         }
         [HttpPost]
+        [ContentAdminFilter]
         public IActionResult Create(String MovieName, String CinemaName, DateTime Time)
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             Cinema cinema = _db.Cinemas.Find(CinemaName);
             if (cinema == null)
@@ -84,25 +81,19 @@ namespace CinemaApplication.Controllers
         }
 
         [HttpGet]
+        [ContentAdminFilter]
         public IActionResult Edit(int? Id)
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             Screening screening = _db.Screenings.Include(s => s.Movie).Include(s => s.Cinema).FirstOrDefault(s => s.Id == Id);
             return View(screening);
         }
 
         [HttpPost]
+        [ContentAdminFilter]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Screening updatedScreening)
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             updatedScreening = _db.Screenings.Include(s => s.Movie).Include(s=>s.Cinema).FirstOrDefault(s=>s.Id==updatedScreening.Id);
             if (updatedScreening == null) 
@@ -120,12 +111,9 @@ namespace CinemaApplication.Controllers
             return RedirectToAction("Index", "Screening",new {MovieName= updatedScreening.Movie.MovieName });
         }
 
+        [ContentAdminFilter]
         public IActionResult Delete(int? Id)
         {
-            if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             Screening screening = _db.Screenings.Include(s => s.Bookings).Include(s => s.Movie).FirstOrDefault(s => s.Id == Id);
             if (screening == null)
