@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 namespace CinemaApplication.Controllers
 {
     [AuthenticationFilter]
+    [AdminFilter]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _db;

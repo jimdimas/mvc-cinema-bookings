@@ -13,23 +13,19 @@ namespace CinemaApplication.Controllers
         public CinemaController(ApplicationDbContext db) {
             _db = db;
         }
+
+        [AdminFilter]
         public IActionResult Index()
         {
-            if (!HttpContext.Session.GetString("role").Equals("ADMIN")){
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             IEnumerable<Cinema> cinemas = _db.Cinemas;
             return View(cinemas);
         }
 
         [HttpPost]
+        [AdminFilter]
         public IActionResult Create(String Name,int Seats,Boolean ThreeDimensions)
         {
-            if (!HttpContext.Session.GetString("role").Equals("ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             Cinema cinema = new Cinema();
             cinema.Name = Name;
@@ -41,12 +37,9 @@ namespace CinemaApplication.Controllers
         }
 
         [HttpPost]
+        [AdminFilter]
         public IActionResult Delete(String name)
         {
-            if (!HttpContext.Session.GetString("role").Equals("ADMIN"))
-            {
-                return RedirectToAction("Index", "Movie");
-            }
             TempData["role"] = HttpContext.Session.GetString("role");
             if (_db.Screenings.Include(s => s.Cinema).FirstOrDefault(s => s.Cinema.Name.Equals(name)) != null)
             {
