@@ -65,21 +65,15 @@ namespace CinemaApplication.Controllers
                 TempData["error"] = "Movie does not exist";
                 return RedirectToAction("Index", "Movie");
             }
-            ContentAdmin contentAdmin = _db.Set<ContentAdmin>().Find(HttpContext.Session.GetString("username"));
             
-            Screening screening = new Screening();
-            if (!_db.Screenings
-                .Include(s => s.Movie)
-                .Include(s => s.Cinema)
-                .Where(
-                    s => (DateTime.Compare(s.Time.AddMinutes(s.Movie.Length), Time) >= 0
-                    || DateTime.Compare(Time.AddMinutes(movie.Length), s.Time) >= 0) 
-                    && s.Cinema.Name.Equals(CinemaName))
-                .IsNullOrEmpty())   //checks whether this screening's time and duration overlap with existing one 
+            if (!checkScheduleOverlaps(movie, cinema, Time))
             {
                 TempData["error"] = "Cannot create screening for movie in given cinema at given time , overlaping schedule with other screening";
                 return RedirectToAction("Index", new { MovieName = MovieName });
             }
+
+            ContentAdmin contentAdmin = _db.Set<ContentAdmin>().Find(HttpContext.Session.GetString("username"));
+            Screening screening = new Screening();
             screening.Movie = movie;
             screening.ContentAdmin = contentAdmin;
             screening.Cinema = cinema;
@@ -103,16 +97,27 @@ namespace CinemaApplication.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Screening screening,String MovieName)
+        public IActionResult Edit(Screening updatedScreening)
         {
             if (!HttpContext.Session.GetString("role").Equals("CONTENT-ADMIN"))
             {
                 return RedirectToAction("Index", "Movie");
             }
             TempData["role"] = HttpContext.Session.GetString("role");
-            _db.Entry(screening).State = EntityState.Modified;
+            updatedScreening = _db.Screenings.Include(s => s.Movie).Include(s=>s.Cinema).FirstOrDefault(s=>s.Id==updatedScreening.Id);
+            if (updatedScreening == null) 
+            {
+                TempData["error"] ="Screening not found , try again";
+                return RedirectToAction("Index", new { MovieName = updatedScreening.Movie.MovieName });
+            }
+            if (!checkScheduleOverlaps(updatedScreening.Movie, updatedScreening.Cinema, updatedScreening.Time))  //check cinema,movie from db field 
+            {
+                TempData["error"] = "Cannot create screening for movie in given cinema at given time , overlaping schedule with other screening";
+                return RedirectToAction("Index", new { MovieName = updatedScreening.Movie.MovieName });
+            }
+            _db.Entry(updatedScreening).State = EntityState.Modified;
             _db.SaveChanges();
-            return RedirectToAction("Index", "Screening",new {MovieName=MovieName});
+            return RedirectToAction("Index", "Screening",new {MovieName= updatedScreening.Movie.MovieName });
         }
 
         public IActionResult Delete(int? Id)
@@ -133,6 +138,23 @@ namespace CinemaApplication.Controllers
             _db.Screenings.Remove(screening);
             _db.SaveChanges();
             return RedirectToAction("Index", "Screening",new { MovieName = movieName });
+        }
+
+        private Boolean checkScheduleOverlaps(Movie movie,Cinema cinema,DateTime Time)
+        {
+            if (_db.Screenings.First() != null &&
+                (!_db.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Cinema)
+                .Where(
+                    s => (DateTime.Compare(s.Time.AddMinutes(s.Movie.Length), Time) >= 0
+                    && DateTime.Compare(Time.AddMinutes(movie.Length), s.Time) >= 0)
+                    && s.Cinema.Name.Equals(cinema.Name))
+                .IsNullOrEmpty()))   //checks whether this screening's time and duration overlap with existing one 
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
